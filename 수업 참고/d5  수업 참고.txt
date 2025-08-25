@@ -1,0 +1,36 @@
+2GB넘는 걸 깃헙에 올릴 때 참고.
+언리얼 컨텐츠에서 사이즈가 큰 것들은 스타트업 컨텐츠에 maps의 built data와 각종 텍스쳐(픽셀수가 큰)들; 
+Built data는 삭제해도 됨, 이 정보는 스태택 메쉬의 라이트 굽기(baking) 정보(=고정된 사물의 그림자는 그냥 칠해 놓음)와 표지판 정보들
+텍스쳐는 컨텐프 드로어 에서 ctrl + a = select all - 우클릭 - 텍스쳐 소스 작업 - 크기 줄이기 / 픽셀 사이즈 줄이기 가능
+
+연습
+1 콜리전 구성 (단순 콜리전이 interact하는 것/복합 컬리전은 구조/so that 단순 콜리전을 조작해야 함)
+   프로젝트 세팅 - 콜리전 - 프리셋 세팅 조정
+2 콜리전 설정/피직스 설정 
+3 spawner 인스턴스 설정 주의하며 블루프린트 작성 
+4 배치 후 디폴트에서 스폰되는 객체 설정 
+
+파일 migrate하는 법(contents folder to contents folder)
+해당 기존 프로젝트 - 해당 컨텐츠 드로우안 컨텐츠 폴더 - 해당 이주할 폴더 우클릭 - 이주 클릭
+
+flow control
+sequence 코드를 쓰면 실행이 끝나지 않고 동시에 진행되는 걸 막을 수 있음
+while코드 = loop + boolean
+not 코드 = reverse
+add reroute node = 노드 점 / 단축키 실행 노드 링크 당겨서 r
+
+이벤트 그래프
+이벤트그래프에서 코드 액트를 더블 클릭하면 자세한 구성 나옴
+타임라인 = x축 시간, y축은 값/변화량(점따라 값을 이어서 산출해내줌 레전드)
+play from start = restart
+reverse = go back from the point
+reverse from end = go back after having reached thr end
+set new time = start at the set time
+핀에 우클릭 자동선택하면 자동으로 스무스하게 곡선 처리함
+
+이벤트 그래프
+백터 트랙에서 핀추가하면 3개 다 나오니 잠그고 하면서 하나의 백터 핀만 추가 가능
+
+spline = 휘갈기 / spline component = 선 따라 움직이삐
+스플라인 포인트로 수정/핀 추가하며 제조(스플라인 제네레이션 판넬) 혹은 선에다 핀 추가
+ctrl + z 취소키
