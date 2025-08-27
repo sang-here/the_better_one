@@ -21,8 +21,10 @@ exercise)
 delta seconds = 다 더하면 총 시간. 발생한 이벤트 간 간격의 통합 = 사실상 그냥 시간과도 같음
 floor 내림
 ceil 올림
-round 반오림
+round 반올림
 modulo 
+Thus 21 modulo 9 is 3, because when 21 is divided by 9, the remainder is 3.
+21 is congruent to 3 modulo 9.
 
 exercise)
 0분 0초
