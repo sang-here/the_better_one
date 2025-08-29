@@ -41,7 +41,6 @@ z = up vector
 블루프린트 클래스 - 아래에서 all classes (thirdperson blueprint에 저장하기)
 허드에서 위젯을 뷰포인트에 뛰어야 함
 월드세팅에서 허드 변경을 해주어야 변경된 허드가 나타남
-player controller에 hud가 연결됨
 	
 <위젯 만들기 HUD의 시각화>
 Head up display (계기판)
