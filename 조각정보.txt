@@ -13,6 +13,7 @@ UV 매핑: 모델링이 완료되면 벌 메쉬에 UV 매핑을 적용해야 합
 
 리깅(Rigging): 벌의 움직임을 제어하기 위해 뼈대(Armature)를 심는 과정입니다. 벌의 몸통, 날개, 다리에 뼈대를 연결하여 나중에 언리얼 엔진에서 애니메이션을 만들 수 있도록 합니다.
 
+https://www.mixamo.com/#/ 믹사모
 https://www.gicon.or.kr/main/ 광주정보문화산업진흥원
 https://gccaca.kr/menu.es?mid=a10901000000 GCC사관학교
 https://dev.epicgames.com/documentation/ko-kr/unreal-engine/math-material-expressions-in-unreal-engine 언리얼 연산자
