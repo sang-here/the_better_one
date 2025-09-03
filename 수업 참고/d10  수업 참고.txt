@@ -43,4 +43,20 @@ get ref는 월드 인덱스 상에서 set으로 변조 가능
 - 부모 코드를 상속 에셋에서 수정하려면서 쓰려면 부모 코드 복붙 or override 함수 이용 불러내서 collapse it then edit it
 
 
+<애니메이션 만들기>
+펩에서 캐릭터 다운
+PBR(PhysicallyBasedRendering)이 더 좋은 high poly
+Polyart는 low poly <- 정감가
 
+character
+마네킹 디테일에서 우측 상단 preview로 선택으로 애니메이션 움직임들 Use specific animation선택으로 preview 가능
+하나의 bone에 다양한 mesh가 올려가기도 함
+에니메이션 블루프린트(ABP) 옆은 각 부위의 weight - tool bar에서 simulate도 가능
+-update animation = tick
+-intialize animation = begin play
+
+캐릭터 블루프린트-캐릭터 무브먼트 컴포넌트-각종 속도/무게 조절
+(언리얼에서는 무언가 구현하기 전에 이미 준비된 기능인지 확인해 볼 것!)
+시뮬레이션이 꺼져도 중력을 받는 이유 = 캐릭터 무브먼트 컴포넌트!(모든 캐릭터의 물리처리는 그러므로 그 컴포넌트에 연결)
+
+부딪히는 것의 collision 설정에서 simulation generate Hit events 설정해야 hit event가 실행됨
