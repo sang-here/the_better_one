@@ -1,0 +1,65 @@
+<HP 가감 및 송출>
+플레이 화면에 뭐가 뜨면 HUD를 확인 
+연산에 clamp를 넣으면 최소 최대치 limit 가능 
+ 
+<Ragdoll과 physics로 캐릭터 쓰러짐 표현하기>
+스켈렉탈 메쉬는 여러 개의 컬리전의 조합 (피직스 시뮬레이트하면 우르르 무저짐) = ThirdPerson의 메쉬에 collision을 Ragdoll로 지정하고 physics를 키면 월드 액터로서의 character에도 동일함
+ set simulation physics
+
+debug key 노드로 임시 키 지정 가능
+스켈락탈 메쉬의 릭 본에서 각 본의 위치 확인 가능 - bone name 복사 가능 - get socket bone name
+캡슐이 월드에서 움직이는 본인임
+쓰러짐 처리 = 캡슐의 z 값과 액터의 위치 고정 + 캡슐 내 bone의 x y와 액터 내의 그 값들 고정
+
+이벤트 디스패쳐가 생성된 블루프린트에서 계속 호출하면
+bind된 블루프린트 내에 연결함수에 그 신호와 결과값이 계속 송출됨
+본인 캐릭터이면 get player state(pawn)하면 소유한 player state를 그냥 바로 얻을 수 있음
+
+(깔끔한 코드는 종료 코드도 해주어야 함. 계속 처리되는 게 있으면 버그 유발하기 쉽고, capacity낭비가 됨)
+
+<<디버깅 debug>>
+노드 우클릭 
+1. toggle break point 중간점 토글에 걸리면 바로 표시됨 / 각종 표시 클릭하면 당시 입력된 값 보여줌
+2. 위에 debug 창열면 각종 경로 확인 및 즉시 추적 가능
+3. 시뮬 플레이 옆에 각종 흐름 체크 창도 있음 (가령 add break point 후 계속 resume해서 넘겨 볼 수 있음)
+(step into 누르면 함수 안으로 들어가서 흐름 따라가줌/step out은 함수 밖으로)
+(월드에서 복제 배치된 수많은 모든 인스턴스들에 대해 액터 내부의 클래스 블루프린트 디버그에서 확인 가능)
+++로그들을 자주 잘 활용할 줄 알아야함. (로그는, 개발이 끝나고 완성본을 내놓으면, 보통 문제가 생길 때 나올 부분에 다는 것. ex, print String으로 문제 유발 시 발동될 부분에 설명으로 예방적으로 달아 놓아놈.)
+
+<캐릭터 부활 시키기>
+월드에 player start 배치한 곳에 캐릭터가 생성됨(없으면 화면이 보는 곳에 플레이시 스폰됨). 여러개의 player start를 배치하면 기본 세팅은 랜덤 위치에서 캐릭터 스폰됨. (특정 starter에 특정 캐릭터가 나오게 하고 싶으면, 월드 배치된 starter 액터의 디테일에서 auto receive input입력에서 설정하거나, 게임모드 오버라이드에서 조정)
+(플레이어 스타트 태크; 플레이어 스타트에서만 쓰이는 태그)
+(태그; 모든 인스턴스는 고유 태그를 가짐)
+
+get game mode - find player start (필요한 놈에 stater tag 설정 후 그 tag 넣기)
+
+set timer by  ... rather than delay
+
+<Game Mode Override>
+캐릭터 스폰 설정, 게임 플레이 설정 등을 관리하는 BP임.
+플레이 통제소.
+플레이어 스타트 태그 활용해서 강제 지정 가능
+
+<ENum이용, 게임 단계 표현해보기>
+시작 카운트 - 플레이 시간 - 종료 & 중립 상태(Run)
+1.
+<game state>
+game state 하나 전용으로 더 만들기 / player state와 다름
+(game state base보다 game state가 더 기능이 많음/아마 콘솔기능이 추가?)
+(game mode base보다 game mode가 더 기능이 많음)
+그러나 base는 base 끼리, 그외는 그외끼리 매칭해야 함; 우리 레벨의 게임모드가 base로 되어 있으니 game state base 새로 하나 만들어야 함.
+
+- game/player state는 이벤트디스패쳐 생성과 짝꿍쓰/늘 생성후 바로 호출하기(함수에 변수핀 끌어 올리면 변수 입력핀 자동 생성해줌)
+- 어느 블루프린트에서 가서도 get game state와 game mode는 get을 할 수 있음. player state는 controller에 통해 접근해야 접근되는 것과 다름. 아주 범용성이 높음.
+- 언리얼 게임에서 구동되면 가장 먼저 game mode가 시작됨. 여기서 설정을 바꾸면 가장 먼저 바뀜. 
+(요즘 개발 트렌드는 bind by event dispatcher)
+2.
+progress bar는 현재 값이랑 최댓값이 결국 필요함 연동 하려면.
+보통 Total Delta Seconds를 raw하게 가져와서, 유저에게 송출직전에 가공해서 보냄.
+함수 변수 인풋 드래그하면 자동으로 promote to variable 나옴
+3. game state가 바뀔 때 마다 새로 시작됨
+
+	
+
+
+
