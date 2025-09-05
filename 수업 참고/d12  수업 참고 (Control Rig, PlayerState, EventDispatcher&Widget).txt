@@ -24,7 +24,7 @@ Basic IK (원하는 관절들 조작하며 연계)
 
 -------
 
- 월드에 ControlRig 배치 후 설정 후 mesh에서 우클릭 후 bake 하면 animation 생성
+ 월드에 ControlRig 배치 후 설정 후 sequence에서 skelectal mesh칸에서 우클릭 후 bake 하면 animation 생성
 bake 후 import 후  animation sequence와 take가 나오는데 take를 지우면 작업본 사라짐
 
 ---
