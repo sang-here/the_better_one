@@ -1,0 +1,126 @@
+visual studio community 다운 = c 코딩 개발 tool, 오랜 시간을 거쳐 수많은 기능 확장팩이 추가됨. 필요한 도구만 골라서 설치하는게 합리적임. - 코파일럿과 연동하면, 깃헙 코드 검사 후 최적화 추천해줌. 근데 아직은 많이 느림.
+visual studio - 도구 - 도구 및 기능 가져오기 = tool 설치 / C++을 사용한 게임 개발 (unreal 모두 체크) - 수정 클릭
+
+--------
+
+<게임 패키징(완)>
+
+언리얼 - 뷰포트 - 플랫폼 - shipping으로 체크 - 패키징 = 게임 패키징
+alt + enter 창화면/전체화면 전화
+(내 프로젝트 내에 임포트된 다양한 에셋들의 프리뷰맵 레벨이 많음. 내가 만든 레벨들도 여럿임. = 내가 필요로 하는 맵들을 패키징 전에 지정 안하면, 전부 빌드하거나, 전부 안 빌드하고 패키징 해버림! -> 프로제트 세팅 - 패키징 - 패키징 - 프로젝트 위  고급 - 디테일 - 언어 및 다양한 타입 들 설정 - 패키지된 빌드에 포함시킬 맵 목록 - +버튼으로 추가(이름 적거나, 폴더에서 설정))
+(한번 빌드하면, 빠르게 하려면, 기존 버전에 추가만 해서 빨리됨. 그러나 버그 유발 가능성도 있음)
+(폴더 경로에 한글이 있으면 오류남)
+
+게임 올리면, 에픽게임즈는 8프로 떼가고 스팀은 15프로.
+
+(언리얼 유튜브 추천)
+Ryan Laley - 컨텐츠 개발의 신
+Matthew Waldstein Tutorials - 액션 하나 하나 설명의 신
+
+------
+
+<애니메이션 import하기>
+애니메이션으로 임포트 후 지정 스켈렉탈 메쉬 선택 후 임포트
+
+----
+
+<Line Trace>
+multi line trace 여러개의 에셋이 걸리는 대로 다 결과 값 산출
+object, channel, profile 등으로 히트를 판단
+
+- object로 하는 경우 
+make array(임시 변수를 생성(메모리 세이브))
+
+-line tracer transform 생성하기
+스켈렉탈 메쉬에서 line tracer의 출발 타겟 위치 파악(ex, spine 03) - 마우스 우클릭 - copy bone name
+mesh 가져와서 get socket location에 bone name 붙여넣기 - start 값에 월드위치를 line tacer에 연결
+end 값에는 - gey socket rotation - get right vector(단위 벡터라 길이가 1이라 원하는 값 곱해줘야 함) (mesh 앞 방향이 green = right임) 
+vector 방향
+forward vector = red
+right vector  = green
+up vector  =blue
+
+- line trace 설정
+trace complex는 complex 콜리전을 기준으로 계산 (엄밀)
+ignore = 무시처리할 대상 설정
+draw debug time(to see debugging visually)
+for one frame = 매 프레임 마다
+for duration / draw time = duration time
+persistent = 지나간 곳에 전부 그려지고 저장됨
+
+---------
+
+<tracer 앞에 히트면 뒤로 눕기 anim, 아니면 앞으로 눕기 anim>
+set montage from anim montage
+animation montage 우클릭 - creat - anim montage
+set montage에 montage 각각 넣기
+
+-------
+
+<canon ball 맞으면 쓰러지고 일어나기>
+canon ball hit event 시 - cast to third person character - do ragdoll + do get up + play montage
+
+-play anim montage = 단발적인 에니메이션 설정시
+ ABP내의 anim graph의 defalut slot은 단발적인 에니메이션을 담당함. 이게 있어야 play montage 가능
+ montage와 default slot의 slot을 똑같이 매칭해주어야 함
+
+----
+
+<루트 모션>
+캡슐 컴포넌트가 진짜 액터임.
+루트 모션 on = 캡슐이 애니메이션을 따라감. 종속됨.
+루트 모션 off = 메쉬가 뭐하든 알빠노
+에니메이션 시퀀스에서 - 에셋 디테일 - root motion - enable root motion = 에니메이션에 종속
+
+--------
+
+함수 개발 꿀팁! <함수의 사용을 외우지마라탕>
+
+1. (함수에 in-output의 변수는 함수내에서 검색으로도 생성 가능)
+2. 함수 우클릭 - 레퍼런스 찾기 = 이 함수가 사용되는 곳 찾기
+ (네모는 함수 그자체, 화살표는 타겟)
+ (쌍안경을 누르면, 프로젝트 내에 다른 블루프린트에서도 레퍼런스를 찾을 수 있음)
+3. 평소에 네이밍을 잘 해야, 레퍼런스해도 알 수 있음.
+4. 함수 내의 인풋 아웃풋의 디폴트 값도 기본값 변경 가능 
+
+<필요한 함수의 인풋에 flag 처리하기>
+ragdoll이 켜지는 순간과 아닌 순간 지정을 나눠하기
+Does timer existed bt function name - true면 clear
+
+----
+
+<낙뎀 실행하기>
+
+1. z velocity를 사용하는 경우
+2. z location을 사용하는 경우
+...
+
+언리얼은 중력 시뮬레이션이 들어가서, 물체의 낙하 속도는 중력의 자유낙하 속도를 넘지 못 함.
+vector length 가 절대값임
+
+(코드에서 뭔가 안 되면, 수정보다는 원점에서 다시 시작하는 것이 보통 좋음)
+
+---------
+
+<카오스 피직스>
+선택모드 to Fracture
+
+Fracture는 콜리전이 있어야 함.
+액터 월드내 배치 - 인스턴스 선택 - new로 fracture추가 후 각종 선택 - seed 바꾸기
+fracture 액터에서 디테일 옵션 = bone color 표시를 꺼야, 텍스쳐가 유지됨
+-damage threshold 변경시 지우고 다시 배치해야 업데이트 됨
+
+(End 누르면 바닥으로 감)
+(stater pack은 contents drawer에서 add로 추가 가능)
+
+geometry배치시, geometry - brush setting - advanced - creat static mesh
+
+(피직스 업데이트가 많음)
+
+----------------
+
+
+
+
+
+

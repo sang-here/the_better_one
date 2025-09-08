@@ -1,0 +1,59 @@
+game state는 어디서든 호출 가능하기 때문에 굳이 game mode에 event dispatcher를 bind하지 않아도 되지만, 연습할 겸했음.(?)
+
+---
+
+<Ready play end 일때 움직임 및 hud 통제하기>
+
+<캐릭터 움직임 막는법>
+
+-캐릭터의 컨트롤러 통제
+	Disable input
+	enable input
+-캐릭터의 Movement input 통제
+
+(이미 game state에 event tick이 있으므로, you don't need to use the event tick here(ThirdPersonCharacter) neither, cause if you do that here again, then you kinda unnecessarily use two tick event executions, just to get the same data, which is the Game State. Tick is pretty much an earnest guy, so, for the pursuit of a slim strucuturing of computing, we don't really want to hire this guy unnecessarily double.)
+
+API가 달라서 Unreal C++과 C++은 같진 않음. unity C++도 다르고 계속 변주가 있음. 큰 구조나 문법은 같지만 약간 다른 언어들임
+
+--
+
+<Ready, Play and End Hud에 띄우기>
+
+Widget에 eventgraph tick으로 game state, check하기
+-tick으로 해도 되고, tick 어쩌피 BP_game state에 있으니 Event Dispatcher도 bind also 가능
+
+Widget의 begin play = construct
+-Text변수화 체크 - set visibility
+
+-----
+
+	<<게임 패키징 하기>>
+
+<처음에 원하는 레벨 나오게 하는 법>
+	프로젝트 세팅 - 레벨 모드 - default map 변경
+
+<게임 Entry단계 만들기>
+-Level 이용
+1. 파일에서 새레벨(옵션있음) - 저장 및 untitled 이름 바꿔야 저장됨
+2. 컨텐츠 드로우에서 우클릭 후 레벨(빈 깡통)
+
+	새레벨 생성 - 접속 - 전용 월드 세팅들 만들어서 일단 바로 적용하기.
+
+<Entry용 widget 만들기>
+-위젯에서 button & boarder
+1. 각종 디자인.
+2. padding 대신 spacer를 파레트에서 불러와서 쓸 수도 있음.
+
+-button 디테일에서 on click event 생성 가능
+
+<게임모드(Input Mode) 변경하기>
+get player controller - input mode 변경 & set mouse cursor
+
+<End 후 10초 뒤 다시 entry로 가기>
+set game paused (게임 자체를 정지)
+open new level
+set timer
+
+<게임 포장하기>
+1. lvl - Platforms - windows - shipping = pakaging mode (보통은 Development로 되어 있음)
+2. lvl - Platforms - windows - project package
