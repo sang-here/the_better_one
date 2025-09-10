@@ -1,0 +1,74 @@
+<PhysicsConstraint - making Frail>
+-재료 만들기
+geometry - brush setting radius & Z, advanced - creat static mesh - set collision of it 
+(sphere가 hit 처리를 radius로 해서 처리 속도가 가장 빠름)
+
+-Frail 액터 구성하기
+head와 handle 메쉬 두개 도입하고 head에만 physics on
+Physics Constraint component를 handle에 종속 시키고, 디테일에서 1번에 handle, 2번엔 head를 추가
+constraint의 위치를 원하는 곳에 위치 = 힌지의 위치
+
+-Physics constraint의 세팅
+angular limits = 회전 허용 방향 정도 및 유무 조정
+linear limits = 얼마까지 늘어날 수 있니?
+
+-cable component는 시각적 처리만 도와줌
+physics constraint에 종속시키고 location 0처리 후 - attach end to Head - set end location 0(헤드에서부터 거리임)
+엿가락처럼 늘어나기 대처 = solver iterations up = stiffness
+
+<문과 힌지 만들어 보기>
+움직이는 것은 door이니 relative transform의 경우 door를 0으로 맞추는 편이 나음.
+physics constraint를 door frame에 종속시키고,  디테일에서 1번에 DoorFrame, 2번엔 Door를 추가
+
+-collision 만들기
+object type = door (도어끼리는 무시하게 설정)
+
+-Physics constraint의 세팅
+linear & angular motor = 복원 동력 세팅
+angular motor mode 에서 twist & swing으로 변경
+Target orientation xyz의 rotation 값으로 가게 됨
+Target Strength = 반발력/탱킹력
+Velocity Damping = 복원력(약화력?)/젖어드는 정도/감쇠력
+
+--
+
+<버튼 푸쉬 만들기>
+-그릇 만들기 두개의 지오메트리로 하나는 subtraction 후 advanced에서 creat static mesh
+- 작은 알멩이 지오메트리 추가
+- 위치값에서 우클릭후 복붙으로 겹치기, 위치값에 연산도 가능함
+
+Physics Constraint의 linear motor로 원위치
+
+- 액터 안에 physicsConstraint의 linear motor로 버튼 설정
+- 박스 컬리젼을 스위치 빈 공간 바닥에 넣어서 오버랩시 결과 산출
+
+---
+
+<이벤트 디스패쳐를 이용한 switch base 만들기 - 원하는 스위치로 움직이는 액터를 조종하는 놈들 막 바꾸기>
+
+BP_SwitchBase를 하나 만들고, 
+다른 스위치들에서 Class settings에서 parent class를 다른 블루프린트에서 바꾸면, 
+그카면 다른 블루프린트에서 부모클래스의 것들을 가져올 수 있음
+하나의 베이스로 모든 스위치들을 깔끔
+
+왼쪽 작은 창(my blueprint)의 톱니바퀴에서 숨겨진 변수들도 다 확인 on off 가능
+
+(event funciton의 Bool 신호도 custom event를 이용하면, 1회성으로도 이벤트 호출용으로 사용 가능)
+ ---
+
+<siwtch 콜리전 조정하기>
+Ragdoll 하면서 우리 캐릭터 mesh가 collision이 physic body로 바뀌었음. = 프로젝트 세팅 - 콜리전 - 오브젝트에 switch 추가 - switch 프리셋 추가 (옵션; 오브젝트 타입=switch & pawn, physic body, camera overlap on)
+
+--- 
+
+<canon 개조 & Projectile 만들기>
+
+canon shooter에 actor,변수(Class Reference로) 하나 추가.
+
+-발사체가 바라볼 방향 구하기
+ 발사체의 위치 값과 목표체의 위치값 + find look at Rotation 코드로 벡터값 추출(get forward vector로 화살표arrow 방향; x 방향 획득)
+
+set actor rotation 코드로 캐릭터를 바라보게 만들고 
+Add actor offset 코드로 그 방향으로 delta만큼 씩 이동함
+
+(회전 관성이 없으면 비물리적/비현실적임. 관성 처리를 인위적으로 추가해야함)

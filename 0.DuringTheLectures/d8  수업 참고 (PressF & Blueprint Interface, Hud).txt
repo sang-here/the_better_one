@@ -1,0 +1,85 @@
+<키보드 움직임 연결하기>
+1
+IMC_Default가 움직임 입력값
+(돋보기는 찾기 화살표는 넣기)
+IA 폴더 찾아서 새로 우클릭-블루브린트-인풋으로 생성
+(인풋 액션의 트리거는 키입력의 디테일한 조정
+value type은 점프는 bool
+마우스는 2D)
+2
+controller의 블루프린드에서-add mappin context에서- IMC_Default를 찾아내서 mappings에서 새로 만든 IA에서 부터 키 추가
+
+(캐릭터의 블루프린트에서 IA 이벤트 추가 조합키를 위해 bool값도 가져오기 가능)
+
+2-1 +
+(블루프린트 인터페이스의 이벤트 메세지 호출시, 메세지를 함수로 보내야함. 그리고 월드 내 배치된 놈에 대해 찾와서 target에 연결해주어야 신호가 감)
+(enhanced input 노드로 press 신호를 가져옴)
+
+기존 시스템은 키(Spacebar), 마우스 버튼(Left Mouse Button)과 같은 물리적인 입력에 직접적으로 게임의 행동(Jump)을 연결했습니다. 반면, Enhanced Input은 Input Action이라는 행동 의도를 먼저 정의합니다.
+기존 시스템으로는 '길게 누르기(Hold)', '두 번 누르기(Tap)', '동시에 누르기'와 같은 복합적인 입력을 구현하기가 매우 번거로웠습니다. but now you can do it with enhanced input things
+
+3
+toggle 아웃풋 이용하여 Toggle 만들기 참고
+블루프린트 인터페이스 활용(각 액터에 결국 인터페이스르 가지고 있으므로 인터페이스를 cast하면 사실상 그것들도 cast됨)으로 캐릭터의 F키 산출로 이벤트 유발을 발생하도록 코드 구성(캡슐 컴포넌트와 overlap 하는 경우에 switch에)
+
+각 블루프린트에 인터페이스의 이벤트 추가 및 이벤트 발생마다 not boolean = boolean을 역방향으로 바꿔주는 코드
+
+
+<대포 만들기>
+physics simul on
+scale 을 줄이면 mass가 줄음 혹은 수동으로 줄일 수 있음
+add impulse = 기본 이동
+angular 원형 각축
+radial 방사형 (폭발)
+
+arrow component 발사체 방향 지정 키
+소유된 canon에 속해서 같이 움직이게 됨
+x방향 = forward vector
+y = right vector
+z = up vector
+스칼라는 따로 연산해서 곱해주거나 더해주거나 해주어야 함
+
+간단한 기능의 조합이 낫다. 새로 만든다. 맥가이버는 잘 안쓰잖소.
+개발자는 불필요히 외우지 않는다. 기능을 쓴다. 최적화?
+머티리얼 기본 꾸미기 = constant vector 4D 노드 추가후 조정 
+
+
+<HUD 만들기>
+블루프린트 클래스 - 아래에서 all classes (thirdperson blueprint에 저장하기)
+허드에서 위젯을 뷰포인트에 뛰어야 함
+월드세팅에서 허드 변경을 해주어야 변경된 허드가 나타남
+	
+<위젯 만들기 HUD의 시각화>
+Head up display (계기판)
+컨텐츠 드로어-우클릭-유저 인터페이스-위젯 블루프린트
+
+fill screen 하면 자동으로 어떤 디바이스든 화면에 풀스크린 됨 ㅅㄱ 
+
+(계층 구조 중요)(화면 마다 해상고 00x00이 다르니 수동보단 앵커로 비율적 위치 조정함)
+(해바라기는 조준점)(position x y를 0이로 지정하면 해바라기 따라감)(size to content 체크하면 글자 크기에 따라감)
+(11          01
+    0.5 0.5
+ 10         00)  = alignment to the flower cursor
+
+horizontla box/vertical box = alignment (항상 패널에 직접 계승하고 진행)
+텍스트 박스 두개를 horizontal box에 계승/가로박스 size to content
+size - fill = 비율
+justification은 텍스트 박스 내에서의 비율
+horizontal alignment를 이용하면 수평 박스 내에서의 text박스의 alignment
+
+가로 박스 선택 해서 앵커로 이동 후 정렬 후 / 조준점에서부터 positioning -50
+
+텍스트 박스는 appearance에서 font에서 텍스트 사이즈 조정
+
+--
+(이미 모든 컨트롤러들은 언리얼에서 허드 클래스를 제공하고 있음. 새로 블루프린트에서도 모든 클래스에서 검색하면 만들 수도 있음.)
+--
+시작용 컨텐츠 추가하면 시작 컨텐츠 다시 추가 가능
+컬리전이 없으면 피직스 설정이 불가함/컬리전이 있어야 preset함
+--
+캐릭터는 이미 기능이 많기 때문에 굳이 캐릭터에서 코드를 짜지 않는다.
+
+<코인의 오버랩 신호를 widget에 보내기>
+promote to value = 변수로 승격
+
+위젯 블루프린트에서 디자이너 칸의 텍스트를 클립 모양에 클릭함을 통해 해당 그래프칸(블루프린트칸)에서 만든 변수랑 연결 가능
