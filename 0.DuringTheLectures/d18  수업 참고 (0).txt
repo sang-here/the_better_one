@@ -1,0 +1,195 @@
+선생님 깃헙에 있는 코드들 레퍼런스들 보고 따라할 수 있으면 얼마든지 해도 좋음.
+
+------
+
+<<Apply damage 이용하기>>
+
+apply damage 노드 - any damage in the Pawn will react.
+damaged actor = 데미지 입을 사람
+instigator = 발포자( controller가 있어야 함)
+Damage Causer = 데미지 유발자 지정 (get a reference from self)
+
+다 설정 후, 캐릭터에서 event "any" damage 생성 (각종 값은 apply damage에서 설정되어 있음) - 데미지 부여 따로 연결
+
+<<폭발적 데미지 입히기>>
+
+spwan emitter at location 노드
+apply radial damage 노드 - any damage in the Pawn will react.
+ - base damage가 최댓값이나 0넣으면 아예 실행 안함
+ - do full damage는 반경에 의한 증폭 없이 일괄 데미지 부여
+ - make array 생성 - ignore actors 연결
+
+-*draw debug sphere로 radius 시각적 확인 가능
+
+<폭발시 밀려나게 하게>
+
+apply radial impulse는 scene  component(위치값이 있음)를 대상으로만 가능, actor component(위치값이 없음/캐릭터 무브먼트)
+그러므로 캐릭터를 밀려면 add impulse with find look at rotation with forward vector
+
+--------
+
+<<무기 오지게 많이 attach 하기>>
+&
+<<data set>>
+
+what is 구조체(Structure/ST)?
+
+모든 것을 컴퓨터에 복제하고 연산할 수 없음 -> so 컴퓨팅할 목표 대상에 대해 합리적인 수준에서 협의와 정의 후 그 해당 부분들만 연산 및 구체화함. 
+i.e. 핀과 핀분할 / 무기 with criteria = 명칭, 용도, 모양, 데미지 정도, 위칫값 ...
+즉, 구조체 안에 구조체 안에 구조체 안에.. 계속 가능
+
+blueprint - structure 생성
+< 무기 구조 짜보기 >
+	명칭 = string
+	용도 = Enum
+	모양 = static mesh
+	데미지 정도 = float
+	위칫값(Socket Name) = name
+
+<데이터 테이블 만들기>
+blueprint - 기타 - datatble 생성
+DT = DataTable
+DT는 Structure 설정을 해야 해서 ST후에 만들어야 함
+-각종 값 짝지어 주기
+(row도 더블 클릭하면 이름 변경 가능, 나중에 검색용 reference index임)
+
+
+
+<데이터테이블 활용으로 월드내 인스턴스 메쉬의 자동 weapon화 함수 만들기>
+
+data table은 아무 블루프린트에서 액션으로 부를 수 있음
+-
+get data table row 노드
+(row name으로 table에서 정보 가져오기)
+get data table row names 노드
+(table에 모든 row이름들 가져오기)
+get data table column 노드
+does data table row exist 노드
+(table에 해당 이름이 있는 확인)
+... 등
+-
+
+ -let's build them in Construction Script!
+
+get data table row 노드
+(row name으로 table에서 정보 가져오기)
+out row 핀분할 하면 정보 다나옴
+
+get data table row names 노드
+(table에 모든 row이름들 가져오기)
+
+(Row name을 promote to variable 후 인스턴스 편집 키면, 에디터 상에서 각각의 인스턴스 변경 가능)
+
+---------------
+
+<데이터테이블로 랜덤 스폰하기>
+
+row name 을 promote to variable 하고, 기본값을 None으로 지정
+
+get data table row names 노드
+(table에 모든 row이름들 가져오기)
+random array item 노드 활용
+set mesh 노드 활용
+
+----
+
+<F키 눌러서 떨어진 무기 잡기>
+
+Character 에서,
+ sphere trace for object 노드 활용 (debug 가시화용) mesh의 world location을 기준으로 연결(이 녀석이 Scene이 바닥에 있걸랑유)
+- object type에 맞는 collision을 가진 친구가 hit tracer를 발동함유
+
+(주은 장비를 변수 하나에다만 저장, 2개 주우려면 2개의 변수 필요 ..)
+
+BP_Weapon 에서,
+Attach actor to component node 활용
+
+(개발자는 반복되는 일을 하지 않는다. 자동이나, 고속도로를 뚫는다)
+
+<F키 눌러서 떨어진 무기 잡기 개선>
+
+BP_Weapon 에서,
+Detach From Actor Node
+
+Character 에서,
+함수 안에 BP_Weapon Variable 끌어다가 detach from Actor 호출
+
+#문제점, 첫 생성시 소켓 크기가 아님 -> 해결 요망
+---------------
+
+<<오래 서면 사라지고 다시 생겨나는 기믹 발판 만들기>>
+
+조건>
+1. 캐릭터가 밟고 2초 지나면 사라짐
+
+2 . 5초뒤 다시 생성
+
+<웨폰 메쉬 셋 사이즈 수정하기>
+---------
+
+<<휘두르면 특정 시점에서 데미지 부여하기>>
+
+애니메이션 익스포트 = 에니메이션 FBX 만들기
+FBX 스켈렉탈 맞춰서 가져오기
+anim montage 만들기
+
+*instance editable 체크 온 시
+ 변수 편집 설정 가능 = expose on spwan 체크
+ 하면 spawn actor 노드를 다른 블루프린트에서 해당 변수 칸 추가 가능
+
+IA 좌클릭 공격 옵션 추가
+캐릭터에서 play montage 노드 활용 구현
+(문제점, 위치나 각종 모션 변수 상관 없이 걍 정해진 모션만 해버림)
+ABP와 BS를 고쳐야 함
+
+<애니메이션 몽타주 개선하기, 상,하체 모션 분리>
+
+ABP에서 Layered blend per bone 노드 활용
+- detail - layer set up - index - branch filter - index - bone name 에 원하는 bone like spine_01 넣기(분리 지점)
+
+rig 들이 0번으로 바닥에서 부터 머리로 올라와서 반중력 방향으로 rig 순서들이 지정됨 -> Layered blend per bone 상단이 하체, 하단이 상체 담당
+
+Maybe or
+
+main state 에서 new save cached pose 노드 로 생성 (이름 Main Pose로 지정)
+그럼 ABP에서 이벤트 호출하듯이 우클릭하면 소환 생성 다능해짐.
+그럼 main state 대신 사용할 수 있음. main state 복제하지 않아도 되고.
+
+
+(Animation은 최소한 Animation Layer Interface 까지 가야 animation 시작임)
+(언리얼은 마스터가 사실상 물리적 한계상 거의 어렵다고 보면됨. 개인의 능력만 갖추면 됨. 모든 프로그래밍들과 같음. C++이든 파이썬이든)
+(=하고 싶은 거 재밌게 하소) (현시대는 기능이나 능력의 미비나 부재의 문제가 아니라 개인 목표와 동기가 문제의 핵심이 됨)
+
+------------
+
+<Dummy에 데미지 부여하기>
+any damage 를 오버라이드에서 가져와서 활용
+apply damage를 
+
+몽타주의 특점 시점에서 notifier에 뭘 추가하면, 그 해당 시점에 특정한 것이 호출됨. 이것은 옛방식이여
+-몽타주에서 혹은 애니메이션에서 notifies 아래 1 버튼 row에서 쭉 따라가서 우클릭 후 add notify
+
+notifier 객체 따로 만들기. 이것이 요즘 것이여
+- blueprint-anim notify로 선택 후 생성
+- 몽타주에서 혹은 애니메이션에서 notifies 아래 1 버튼 row에서 쭉 따라가서 우클릭 후 add notify에 anim notify객체 추가 후 
+- notifier 객체 안 override 에서 가용가능한 이벤트 확인 가능 / recieved notify 하면 애님에서 찍힌 포인트에서 애님 시뮬될 때 해당 이벤트가 호출됨. 
+--
+maybe 각종 trace 노드로 데미지 구현?
+SM_Sword 에서 인덱스 용 socket 추가
+--
+AnimNotify_Hit에서,
+get owner 해당 움직임 메쉬의 소유자,로 캐릭터 함수 호출
+
+character에서, 함수 안에서  trace 노드
+SM_Sword 에서 인덱스 용 socket위치에 trace 생성
+
+내가 equipped한 weapon에서 socket 위치에 tracer 생성 하고 hit된 물체에서 apply damage 부여
+그 물체는 any damage 이벤트로 자체 hp 조정
+
+
+------------
+
+숙제
+data set
+응 그냥 다 복슙
+

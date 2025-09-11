@@ -56,7 +56,7 @@ SM = Static Mesh
 3. attach actor to component; preview하며 설정해 온 소켓 이름 복붙 
 (scale rule을 keep relative로 해두면 preview에서 소켓 크기 조절로 무기 크기 조절도 가능)
 
-*data set 배우기 = 여러 개의 소켓들 다루기
+*data table 배우기 = 여러 개의 소켓들 다루기
 
 ----
 
