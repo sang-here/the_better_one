@@ -98,6 +98,8 @@ spawn sound 코드(cue=공간사운드)
 
 3. 해당 widget component에 UI에 class에 만든 widget 할당
 
+4. widget component에서 cast해서 원하는 widget에 가려면, get user widget object 노드를 먼저 꺼야됨
+
 유의)
 (UI에서의 draw사이즈가 widget에 보이는 것 보다 먼저임.)
 (그러나 widget의 해바라기 자체를 가운데 정렬을 해놔야 액터 내에서 정렬하기 쉬움)
