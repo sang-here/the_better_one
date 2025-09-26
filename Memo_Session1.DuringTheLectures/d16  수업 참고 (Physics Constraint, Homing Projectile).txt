@@ -69,6 +69,9 @@ canon shooter에 actor,변수(Class Reference로) 하나 추가.
  발사체의 위치 값과 목표체의 위치값 + find look at Rotation 코드로 벡터값 추출(get forward vector로 화살표arrow 방향; x 방향 획득)
 
 set actor rotation 코드로 캐릭터를 바라보게 만들고 
+(Unreal은 Mesh가 무슨 축을 앞이라고 생각하든 상관 안 함.
+그냥 네가 들고 온 메쉬의 +X를 “앞”이라고 무조건 믿는다. 주의!!)
+
 Add actor offset 코드로 그 방향으로 delta만큼 씩 이동함
 
 (회전 관성이 없으면 비물리적/비현실적임. 관성 처리를 인위적으로 추가해야함)

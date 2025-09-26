@@ -3,7 +3,7 @@
 연산에 clamp를 넣으면 최소 최대치 limit 가능 
  
 <Ragdoll과 physics로 캐릭터 쓰러짐 표현하기>
-스켈렉탈 메쉬는 여러 개의 컬리전의 조합 (피직스 시뮬레이트하면 우르르 무저짐) = ThirdPerson의 메쉬에 collision을 Ragdoll로 지정하고 physics를 키면 월드 액터로서의 character에도 동일함
+스켈렉탈 메쉬는 여러 개의 컬리전의 조합 (피직스 시뮬레이트하면 우르르 무저짐) = ThirdPerson의 메쉬에 collision을 Ragdoll(custom임)로 지정하고 physics를 키면 월드 액터로서의 character에도 동일함
  set simulation physics
 
 debug key 노드로 임시 키 지정 가능
